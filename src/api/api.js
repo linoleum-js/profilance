@@ -13,31 +13,31 @@ const users = [{
 
 /** @type {Array<IPost>} */
 const posts = [{
-  title: 'post1',
+  title: 'post 1',
   text: 'lorem ipsum dolor sit amet, consectetur adip',
   createdAt: 123,
-  isApproved: true,
+  isApproved: false,
   id: 1
 }, {
-  title: 'post1',
+  title: 'post 2',
   text: 'lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, consectetur adip',
   createdAt: 123,
   isApproved: true,
   id: 2
 }, {
-  title: 'post1',
+  title: 'post 3',
   text: 'lorem ipsum dolor sit amet, lorem ipsum dolor sit amet',
   createdAt: 123,
   isApproved: true,
   id: 3
 }, {
-  title: 'post1',
+  title: 'post 4',
   text: 'lorem ipsum dolor sit amet, consectetur adip, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit ametlorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet, lorem ipsum dolor sit amet',
   createdAt: 123,
   isApproved: true,
   id: 4
 }, {
-  title: 'post1',
+  title: 'post 5',
   text: 'lorem ipsum dolor sit amet, consectetur adip lorem ipsum dolor sit amet, lorem ipsum dolor sit amet lorem ipsum dolor sit amet, lorem ipsum dolor sit amet lorem ipsum dolor sit amet, lorem ipsum dolor sit amet lorem ipsum dolor sit amet, lorem ipsum dolor sit amet lorem ipsum dolor sit amet, lorem ipsum dolor sit amet lorem ipsum dolor sit amet, lorem ipsum dolor sit amet lorem ipsum dolor sit amet, lorem ipsum dolor sit amet',
   createdAt: 123,
   isApproved: false,

@@ -1,5 +1,5 @@
 
-import { createSlice, createAsyncThunk, Slice, SliceCaseReducers } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, createAction, Slice, SliceCaseReducers } from '@reduxjs/toolkit';
 import { stubRequest, loadPosts } from '../api/api';
 
 /** @type {IPostsState} */
@@ -7,11 +7,14 @@ const initialState = {
   list: [],
   loading: false,
   error: null,
+  filter: {
+    query: '',
+  }
 };
 
 export const postsFetchAction = createAsyncThunk(
   'posts/fetch',
-  async ({ query }) => {
+  async () => {
     const response = await loadPosts();
     return response.data;
   }
@@ -21,12 +24,16 @@ export const postsApproveAction = createAsyncThunk(
   'posts/approve',
   async (postId) => {
     await stubRequest();
+    return postId;
   }
 );
 
 export const postsRemoveAction = createAsyncThunk(
   'posts/remove',
   async (postId) => {
+    console.log('postsRemoveAction');
+    await stubRequest();
+    return postId;
   }
 );
 
@@ -35,6 +42,8 @@ export const postsCreateAction = createAsyncThunk(
   async (postId) => {
   }
 );
+
+export const postsFilterAction = createAction('posts/filter');
 
 /** @type {Slice<IPostsState, SliceCaseReducers<any>, any>} */
 export const postsSlice = createSlice({
@@ -55,21 +64,27 @@ export const postsSlice = createSlice({
         state.loading = false;
         state.error = error.message;
       })
-      .addCase(postsApproveAction.pending, (state, postId) => {
-        const index = state.list.findIndex(post => post.id === postId);
+
+
+      .addCase(postsApproveAction.fulfilled, (state, { payload }) => {
+        const index = state.list.findIndex(post => post.id === payload);
         state.list[index].isApproved = true;
       })
       .addCase(postsApproveAction.rejected, (state, { error }) => {
         state.error = error.message;
       })
-      .addCase(postsRemoveAction.pending, (state, postId) => {
-        const index = state.list.findIndex(post => post.id === postId);
+
+
+      .addCase(postsRemoveAction.fulfilled, (state, { payload }) => {
+        const index = state.list.findIndex(post => post.id === payload);
         state.list.splice(index, 1);
       })
       .addCase(postsRemoveAction.rejected, (state, { error }) => {
         state.error = error.message;
       })
-      .addCase(postsCreateAction.pending, (state, { payload }) => {
+
+
+      .addCase(postsCreateAction.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
@@ -80,7 +95,12 @@ export const postsSlice = createSlice({
       .addCase(postsCreateAction.rejected, (state, { error }) => {
         state.loading = false;
         state.error = error.message;
-      });
+      })
+
+      .addCase(postsFilterAction, (state, { payload }) => {
+        state.filter = payload;
+      })
+    ;
 
   }
 });

@@ -1,7 +1,6 @@
 
 
-export const Post = ({ data }) => {
-  console.log('post')
+export const Post = ({ data, onApprove, onRemove }) => {
   return (
     <article>
       <h3>{data.title}</h3>
@@ -9,6 +8,10 @@ export const Post = ({ data }) => {
       <div>
         <div>
           {data.createdAt}
+        </div>
+        <div>
+          <button onClick={() => onApprove(data.id)}>Approve</button>
+          <button onClick={() => onRemove(data.id)}>Remove</button>
         </div>
       </div>
     </article>
