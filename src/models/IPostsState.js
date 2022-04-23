@@ -1,7 +1,7 @@
 /**
  * @typedef {object} IPostsState
  *
- * @property {Array<IPost>} list
+ * @property {Array} list
  * @property {?string} error
  * @property {boolean} loading
  * @property {object} filter

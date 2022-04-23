@@ -9,7 +9,7 @@ const guestUser = {
 
 /** @type {IUserState} */
 const initialState = {
-  user: guestUser,
+  data: guestUser,
   loading: false,
   error: null,
 };
@@ -43,7 +43,7 @@ export const userSlice = createSlice({
       .addCase(userAuthenticateAction.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.error = null;
-        state.user = payload;
+        state.data = payload;
       })
       .addCase(userAuthenticateAction.rejected, (state, { error }) => {
         state.loading = false;
@@ -51,7 +51,7 @@ export const userSlice = createSlice({
         state.error = error.message;
       })
       .addCase(userLogoutAction.pending, (state) => {
-        state.user = guestUser;
+        state.data = guestUser;
       });
   }
 });

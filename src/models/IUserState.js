@@ -2,7 +2,7 @@
 /**
  * @typedef {object} IUserState
  *
- * @property {IUser} user
+ * @property {IUser} data
  * @property {boolean} loading
  * @property {?string} error
  */

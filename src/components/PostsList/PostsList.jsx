@@ -5,30 +5,29 @@ import {useDebounce, useDebounceCallback} from '@react-hook/debounce'
 
 import { Post } from '../Post';
 import {postsApproveAction, postsFetchAction, postsRemoveAction, postsFilterAction} from '../../redux/posts';
-
-
+import Role from "../../models/Role";
 
 export const PostsList = () => {
   const dispatch = useDispatch();
-  // TODO: jsdoc
   /** @type {IPostsState} */
   const posts = useSelector(state => state.posts);
+  /** @type {IUserState} */
+  const user = useSelector(state => state.user);
   const [searchParams, setSearchParams] = useSearchParams();
-  const urlQuery = searchParams.get('query');
+  const urlQuery = searchParams.get('query') || '';
 
   const updateFilterFromQuery = () => {
-    dispatch(postsFilterAction({ query: urlQuery || '' }));
+    dispatch(postsFilterAction({ query: urlQuery }));
   };
 
   useEffect(() => {
     dispatch(postsFetchAction());
-    updateFilterFromQuery()
   }, [dispatch]);
 
   useEffect(updateFilterFromQuery, [urlQuery, dispatch]);
 
   const onPostApprove = (postId) => {
-    dispatch(postsApproveAction(postId))
+    dispatch(postsApproveAction(postId));
   };
 
   const onPostRemove = (postId) => {
@@ -38,9 +37,9 @@ export const PostsList = () => {
   const onQueryChange = (e) => {
     const value = e.target.value;
     if (value) {
-      setSearchParams({query: e.target.value});
+      setSearchParams({ query: value });
     } else {
-      setSearchParams({});
+      setSearchParams({ });
     }
   };
 
@@ -50,6 +49,11 @@ export const PostsList = () => {
   };
 
   const filterForUser = (list) => {
+    const role = user.data.role
+    const hideUnapproved = role === Role.GUEST;
+    if (hideUnapproved) {
+      return list.filter(item => item.isApproved);
+    }
     return list;
   };
 
@@ -58,7 +62,7 @@ export const PostsList = () => {
   return (
     <div>
       <form>
-        <input type="text" onChange={onQueryChange} value={urlQuery || ''} />
+        <input type="text" onChange={onQueryChange} value={urlQuery} />
       </form>
       <ul>
         {filtered.map(post => {
