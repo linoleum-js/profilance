@@ -2,5 +2,5 @@
  * @typedef {object} IUser
  *
  * @property {string} username
- * @property {role}
+ * @property {Role} role
  */

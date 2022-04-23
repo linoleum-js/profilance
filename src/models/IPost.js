@@ -6,4 +6,3 @@
  * @property {number} createdAt
  * @property {boolean} isApproved
  */
-
