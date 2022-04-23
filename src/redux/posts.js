@@ -1,5 +1,7 @@
 
 import { createSlice, createAsyncThunk, createAction, Slice, SliceCaseReducers } from '@reduxjs/toolkit';
+import { v4 as uuid } from 'uuid';
+
 import { stubRequest, loadPosts } from '../api/api';
 
 /** @type {IPostsState} */
@@ -31,7 +33,6 @@ export const postsApproveAction = createAsyncThunk(
 export const postsRemoveAction = createAsyncThunk(
   'posts/remove',
   async (postId) => {
-    console.log('postsRemoveAction');
     await stubRequest();
     return postId;
   }
@@ -39,7 +40,13 @@ export const postsRemoveAction = createAsyncThunk(
 
 export const postsCreateAction = createAsyncThunk(
   'posts/create',
-  async (postId) => {
+  async (data) => {
+    await stubRequest();
+    return {
+      ...data,
+      createdAt: Date.now(),
+      id: uuid(),
+    };
   }
 );
 
@@ -91,6 +98,7 @@ export const postsSlice = createSlice({
       .addCase(postsCreateAction.fulfilled, (state, { payload }) => {
         state.error = null;
         state.loading = false;
+        state.list.push(payload);
       })
       .addCase(postsCreateAction.rejected, (state, { error }) => {
         state.loading = false;

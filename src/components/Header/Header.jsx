@@ -23,9 +23,7 @@ export const Header = () => {
   const ui = useSelector(state => state.ui);
 
   const loggedIn = user.data.role !== Role.GUEST;
-  const canCreatePosts = user.data.role === Role.USER;
-
-
+  const canCreatePosts = user.data.role === Role.USER || true;
 
   const closeLoginModal = () => dispatch(uiLoginModalCloseAction());
   const openLoginModal = () => dispatch(uiLoginModalOpenAction());
@@ -39,8 +37,6 @@ export const Header = () => {
       openLoginModal();
     }
   };
-
-
 
   return (
     <header>

@@ -9,13 +9,7 @@ export const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const clear = () => {
-    setUsername('');
-    setPassword('');
-  };
-
   const onCancel = () => {
-    clear();
     dispatch(uiLoginModalCloseAction());
   };
 

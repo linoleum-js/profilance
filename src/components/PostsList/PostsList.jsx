@@ -13,6 +13,7 @@ export const PostsList = () => {
   const posts = useSelector(state => state.posts);
   /** @type {IUserState} */
   const user = useSelector(state => state.user);
+  const canApprove = user.data.role === Role.ADMIN;
   const [searchParams, setSearchParams] = useSearchParams();
   const urlQuery = searchParams.get('query') || '';
 
@@ -72,6 +73,7 @@ export const PostsList = () => {
               data={post}
               onApprove={onPostApprove}
               onRemove={onPostRemove}
+              needsApprove={!post.isApproved && canApprove}
             />
           );
         })}
