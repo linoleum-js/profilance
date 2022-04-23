@@ -1,41 +1,57 @@
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { authenticateUser, stubRequest } from '../api/api';
 import Role from "../models/Role";
 
+const guestUser = {
+  role: Role.GUEST
+};
 
 /** @type {IUserState} */
 const initialState = {
-  user: null,
+  user: guestUser,
   loading: false,
   error: null,
 };
 
-export const getUser = createAsyncThunk(
-  'user/getUser',
+export const userAuthenticateAction = createAsyncThunk(
+  'user/authenticate',
+  async (credentials) => {
+    const response = await authenticateUser(credentials);
+    return response.data;
+  }
+);
+
+export const userLogoutAction = createAsyncThunk(
+  'user/logout',
   async () => {
-    console.log('GET USER ACTION');
-    return {
-      username: '132',
-      role: Role.ADMIN,
-    }
+    // normally logout is also asynchronous because we want to
+    // invalidate the token
+    await stubRequest();
   }
 );
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getUser.pending, (state) => {
+      .addCase(userAuthenticateAction.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
-      .addCase(getUser.fulfilled, (state, { payload }) => {
+      .addCase(userAuthenticateAction.fulfilled, (state, { payload }) => {
         state.loading = false;
+        state.error = null;
         state.user = payload;
       })
-      .addCase(getUser.rejected, (state) => {
-        state.error = 'Failed to load user info';
+      .addCase(userAuthenticateAction.rejected, (state, { error }) => {
+        state.loading = false;
+        // handle 401/403/etc
+        state.error = error.message;
+      })
+      .addCase(userLogoutAction.pending, (state) => {
+        state.user = guestUser;
       });
   }
 });

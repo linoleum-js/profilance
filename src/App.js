@@ -1,27 +1,30 @@
 
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 
 import { Header } from './components/Header';
 import { PostsList } from './components/PostsList';
 
 
-import { getUser } from './redux/user';
+import {userAuthenticateAction, userLogoutAction} from './redux/user';
 
 function App() {
   const dispatch = useDispatch();
+  const user = useSelector(state => state.user);
 
   useEffect(() => {
-    console.log('useEffect called');
-    // dispatch(getUser());
+    dispatch(userAuthenticateAction({ username: 'user1', password: 'pass1'}));
+
+    setTimeout(() => {
+      dispatch(userLogoutAction());
+
+    }, 1500);
   }, []);
-
-  console.log('APP RENDERED');
-
 
   return (
     <div className="App">
+      {JSON.stringify(user)}
       <Header />
       <PostsList />
     </div>

@@ -5,4 +5,5 @@
  * @property {string} text
  * @property {number} createdAt
  * @property {boolean} isApproved
+ * @property {string} id
  */
