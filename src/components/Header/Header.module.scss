@@ -1,11 +1,9 @@
 
 @import '/src/styles/_variables';
 
-$header-bg: #fffaf2;
-
 .header {
   height: 80px;
-  background-color: $header-bg;
+  background-color: #fffaf2;
   margin-bottom: 25px;
 
   &_logo {
@@ -14,6 +12,14 @@ $header-bg: #fffaf2;
     height: 48px;
     margin-right: 50px;
     background-image: url(../../assets/logo.svg);
+    background-size: cover;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+
+    @media screen and (max-width: 600px) {
+      width: 55px;
+      margin-right: 0;
+    }
   }
 
   &_links {
@@ -29,7 +35,6 @@ $header-bg: #fffaf2;
     font-weight: 500;
     border: none;
     background: transparent;
-    //font-family: $main-font;
     margin-left: 20px;
     cursor: pointer;
     transition: color 0.3s ease;
