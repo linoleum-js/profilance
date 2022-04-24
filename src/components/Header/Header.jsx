@@ -1,33 +1,28 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import {useDispatch, useSelector} from "react-redux";
-import Modal from 'react-modal';
+import { NavLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
-import Role from "../../models/Role";
-import {userLogoutAction} from "../../redux/user";
+import classnames from 'classnames';
+
+import { userLogoutAction } from '../../redux/user';
 import {
-  uiLoginModalCloseAction,
   uiLoginModalOpenAction,
   uiPostModalOpenAction,
-  uiPostModalCloseAction,
 } from '../../redux/ui';
-import {LoginForm} from "../LoginForm";
-import PostForm from "../PostForm/PostForm";
 
+import Role from '../../models/Role';
+import { canPost } from '../../util/permissions';
+import { selectUser } from '../../util/selectors';
+
+import styles from './Header.module.scss';
 
 export const Header = () => {
   const dispatch = useDispatch();
   /** @type {IUserState} */
-  const user = useSelector(state => state.user);
-  /** @type {IUiState} */
-  const ui = useSelector(state => state.ui);
+  const user = useSelector(selectUser);
+  const userRole = user.data.role;
+  const loggedIn = userRole !== Role.GUEST;
 
-  const loggedIn = user.data.role !== Role.GUEST;
-  const canCreatePosts = user.data.role === Role.USER || true;
-
-  const closeLoginModal = () => dispatch(uiLoginModalCloseAction());
   const openLoginModal = () => dispatch(uiLoginModalOpenAction());
-  const closePostModal = () => dispatch(uiPostModalCloseAction());
   const openPostModal = () => dispatch(uiPostModalOpenAction());
 
   const handleLoginClick = () => {
@@ -39,39 +34,19 @@ export const Header = () => {
   };
 
   return (
-    <header>
-      <div>
-        <Link to="/">главная</Link>
-      </div>
-      <div>
-        <Link to="/posts">Новости</Link>
-        {canCreatePosts && (
-          <button onClick={openPostModal}>
+    <header className={styles.header}>
+      <div className={classnames("container", styles.header_links)}>
+        <NavLink to="/" className={styles.header_logo} />
+        <NavLink to="/posts" className={styles.header_link}>Новости</NavLink>
+        {canPost(userRole) && (
+          <button onClick={openPostModal} className={styles.header_link}>
             Написать
           </button>
         )}
-        <button onClick={handleLoginClick}>
+        <button onClick={handleLoginClick} className={styles.header_link}>
           {loggedIn ? 'Выйти' : 'Войти'}
         </button>
       </div>
-
-      <Modal
-        isOpen={ui.loginModalOpen}
-        onRequestClose={closeLoginModal}
-      >
-        <LoginForm
-          onClose={closeLoginModal}
-        />
-      </Modal>
-
-      <Modal
-        isOpen={ui.postModalOpen}
-        onRequestClose={closePostModal}
-      >
-        <PostForm
-          onClose={closePostModal}
-        />
-      </Modal>
     </header>
   );
 };

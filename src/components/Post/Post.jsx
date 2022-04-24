@@ -1,18 +1,25 @@
 
+import moment from 'moment';
+
+import styles from './Post.module.scss';
 
 export const Post = ({ data, onApprove, onRemove, needsApprove }) => {
+
+  const handleRemove = () => onRemove(data.id);
+  const handleApprove = () => onApprove(data.id);
+
   return (
-    <article>
-      <h3>{data.title}</h3>
+    <article className={styles.post}>
+      <h3 className={styles.post_header}>{data.title}</h3>
       <p>{data.text}</p>
-      <div>
+      <div className={styles.post_footer}>
         <div>
-          {data.createdAt}
+          {moment(data.createdAt).format('DD.MM.YYYY')}
         </div>
         {needsApprove &&
           <div>
-            <button onClick={() => onApprove(data.id)}>Approve</button>
-            <button onClick={() => onRemove(data.id)}>Remove</button>
+            <button onClick={handleRemove} className="formButton">Удалить</button>
+            <button onClick={handleApprove} className="formButton">Одобрить</button>
           </div>
         }
       </div>

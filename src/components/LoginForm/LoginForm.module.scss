@@ -1,0 +1,14 @@
+@import '/src/styles/mixins';
+@import '/src/styles/variables';
+
+.loginForm {
+  &_modal {
+    @include shadowDark;
+    width: 400px;
+  }
+
+  &_error {
+    margin-bottom: 20px;
+    color: $colorError;
+  }
+}

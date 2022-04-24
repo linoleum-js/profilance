@@ -1,19 +1,26 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
-import {useDebounce, useDebounceCallback} from '@react-hook/debounce'
 
 import { Post } from '../Post';
-import {postsApproveAction, postsFetchAction, postsRemoveAction, postsFilterAction} from '../../redux/posts';
-import Role from "../../models/Role";
+import {
+  postsApproveAction,
+  postsFetchAction,
+  postsRemoveAction,
+  postsFilterAction,
+} from '../../redux/posts';
+import { selectPosts, selectUser } from '../../util/selectors';
+import { canApprove, canSeeUnapproved } from '../../util/permissions';
+
+import styles from './PostsList.module.scss';
 
 export const PostsList = () => {
   const dispatch = useDispatch();
   /** @type {IPostsState} */
-  const posts = useSelector(state => state.posts);
+  const posts = useSelector(selectPosts);
   /** @type {IUserState} */
-  const user = useSelector(state => state.user);
-  const canApprove = user.data.role === Role.ADMIN;
+  const user = useSelector(selectUser);
+  const userRole = user.data.role;
   const [searchParams, setSearchParams] = useSearchParams();
   const urlQuery = searchParams.get('query') || '';
 
@@ -50,9 +57,7 @@ export const PostsList = () => {
   };
 
   const filterForUser = (list) => {
-    const role = user.data.role
-    const hideUnapproved = role === Role.GUEST;
-    if (hideUnapproved) {
+    if (!canSeeUnapproved(userRole)) {
       return list.filter(item => item.isApproved);
     }
     return list;
@@ -61,11 +66,15 @@ export const PostsList = () => {
   const filtered = filterBySearch(filterForUser(posts.list));
 
   return (
-    <div>
-      <form>
-        <input type="text" onChange={onQueryChange} value={urlQuery} />
-      </form>
-      <ul>
+    <div className="container">
+      <input
+        type="text"
+        onChange={onQueryChange}
+        value={urlQuery}
+        className="formControl"
+        placeholder="Поиск"
+      />
+      <div className={styles.PostsList_list}>
         {filtered.map(post => {
           return (
             <Post
@@ -73,11 +82,11 @@ export const PostsList = () => {
               data={post}
               onApprove={onPostApprove}
               onRemove={onPostRemove}
-              needsApprove={!post.isApproved && canApprove}
+              needsApprove={!post.isApproved && canApprove(userRole)}
             />
           );
         })}
-      </ul>
+      </div>
     </div>
   );
 };

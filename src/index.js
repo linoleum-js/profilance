@@ -1,19 +1,22 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom/client';
-
+import Modal from 'react-modal';
 
 import App from './App';
 import store from "./redux/store";
 
 import './index.scss';
 
+const rootNode = document.getElementById('root');
+const root = ReactDOM.createRoot(rootNode);
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+Modal.setAppElement(rootNode);
+
 root.render(
-  // <React.StrictMode>
+  <React.StrictMode>
     <Provider store={store}>
       <App />
     </Provider>
-  // </React.StrictMode>
+  </React.StrictMode>
 );

@@ -1,0 +1,42 @@
+
+@import '/src/styles/_variables';
+
+$header-bg: #fffaf2;
+
+.header {
+  height: 80px;
+  background-color: $header-bg;
+  margin-bottom: 25px;
+
+  &_logo {
+    display: inline-block;
+    width: 257px;
+    height: 48px;
+    margin-right: 50px;
+    background-image: url(../../assets/logo.svg);
+  }
+
+  &_links {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+
+  &_link {
+    color: $textColor;
+    font-family: 'Montserrat', Arial, sans-serif;
+    text-decoration: none;
+    font-weight: 500;
+    border: none;
+    background: transparent;
+    //font-family: $main-font;
+    margin-left: 20px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #ffb82d;
+    }
+  }
+}
+

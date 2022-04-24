@@ -1,7 +1,7 @@
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { authenticateUser, stubRequest } from '../api/api';
-import Role from "../models/Role";
+import Role from '../models/Role';
 
 const guestUser = {
   role: Role.GUEST

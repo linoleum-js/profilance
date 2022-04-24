@@ -1,21 +1,17 @@
 
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux'
 import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Link
-} from "react-router-dom";
+} from 'react-router-dom';
 
 
 import { Header } from './components/Header';
 import { PostsList } from './components/PostsList';
-import {Home} from "./components/Home";
-
-
-
-import {userAuthenticateAction, userLogoutAction} from './redux/user';
+import { Home } from './components/Home';
+import { LoginFormModal } from './components/LoginForm/LoginFormModal';
+import { PostFormModal } from './components/PostForm/PostFormModal';
+import { GlobalPreloader } from './components/GlobalPreloader';
 
 function App() {
   return (
@@ -24,10 +20,11 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/posts" element={<PostsList />}>
-            <Route path=":query" element={<PostsList />} />
-          </Route>
+          <Route path="/posts" element={<PostsList />} />
         </Routes>
+        <LoginFormModal />
+        <PostFormModal />
+        <GlobalPreloader />
       </Router>
     </div>
   );

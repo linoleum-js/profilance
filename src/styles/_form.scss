@@ -1,0 +1,58 @@
+@import './variables';
+
+@mixin basicInput {
+  background-color: #fff;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 400;
+  border: 1px solid #ccc;
+  display: block;
+  width: 100%;
+  font-family: $mainFont;
+}
+
+.formControl {
+  @include basicInput;
+  height: 50px;
+  padding: 0 15px;
+}
+
+.formTextarea {
+  @include basicInput;
+  resize: none;
+  padding: 15px 15px 0;
+}
+
+.formGroup {
+  margin-bottom: 25px;
+}
+
+.formActions {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.formButton {
+  background-color: #fff;
+  height: 30px;
+  padding: 0 20px;
+  font-size: 16px;
+  border: 1px solid #c0c0c0;
+  cursor: pointer;
+  border-radius: 5px;
+
+  &__error {
+    background-color: $colorError;
+  }
+
+  &__success {
+    background-color: $colorSuccess;
+  }
+}
+
+.formLabel {
+  position: relative;
+  top: -10px;
+}

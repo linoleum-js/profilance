@@ -1,11 +1,16 @@
-import {useSelector} from "react-redux";
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../util/selectors';
 
+import styles from './Home.module.scss';
 
 export const Home = () => {
-  const { username } = useSelector(state => state.user);
+  const user = useSelector(selectUser);
+  const username = user.data.username;
   const actualUsername = username ? username : 'Гость'
 
   return (
-    <div>Привет, {actualUsername}</div>
+    <div className="container">
+      <h1 className={styles.home_text}>Привет, {actualUsername}</h1>
+    </div>
   );
 };

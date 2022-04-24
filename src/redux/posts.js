@@ -44,6 +44,7 @@ export const postsCreateAction = createAsyncThunk(
     await stubRequest();
     return {
       ...data,
+      isApproved: false,
       createdAt: Date.now(),
       id: uuid(),
     };
@@ -54,7 +55,7 @@ export const postsFilterAction = createAction('posts/filter');
 
 /** @type {Slice<IPostsState, SliceCaseReducers<any>, any>} */
 export const postsSlice = createSlice({
-  name: 'user',
+  name: 'posts',
   initialState,
   extraReducers: (builder) => {
     builder
@@ -98,7 +99,7 @@ export const postsSlice = createSlice({
       .addCase(postsCreateAction.fulfilled, (state, { payload }) => {
         state.error = null;
         state.loading = false;
-        state.list.push(payload);
+        state.list.unshift(payload);
       })
       .addCase(postsCreateAction.rejected, (state, { error }) => {
         state.loading = false;
