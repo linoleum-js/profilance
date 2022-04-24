@@ -35,7 +35,7 @@ export const LoginForm = () => {
       </div>
       <div className="formGroup">
         {/*<label>Пароль</label>*/}
-        <input type="text" onChange={onPasswordChange} value={password} className="formControl" placeholder={'Пароль'} />
+        <input type="password" onChange={onPasswordChange} value={password} className="formControl" placeholder={'Пароль'} />
       </div>
       {user.error && (
         <div className={styles.loginForm_error}>{user.error}</div>
