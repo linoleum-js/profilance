@@ -52,8 +52,11 @@ export const PostsList = () => {
   };
 
   const filterBySearch = (list) => {
-    const query = posts.filter.query;
-    return list.filter(item => item.title.includes(query) || item.text.includes(query));
+    const query = posts.filter.query.toLowerCase();
+    return list.filter(
+      item => item.title.toLowerCase().includes(query) ||
+        item.text.toLowerCase().includes(query)
+    );
   };
 
   const filterForUser = (list) => {
