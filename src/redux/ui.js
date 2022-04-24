@@ -2,7 +2,7 @@
 import { createSlice, createAction } from '@reduxjs/toolkit';
 
 import { userAuthenticateAction } from './user';
-import { postsApproveAction, postsCreateAction, postsFetchAction } from './posts';
+import { postsCreateAction } from './posts';
 
 // we want to close modals only after we get response, so in this case
 // it makes sense to keep this state in redux.
@@ -28,7 +28,6 @@ export const uiSlice = createSlice({
     builder
       .addCase(userAuthenticateAction.fulfilled, (state) => {
         state.loginModalOpen = false;
-        state.preloaderVisible = false;
       })
       .addCase(uiLoginModalCloseAction, (state) => {
         state.loginModalOpen = false;
@@ -39,7 +38,6 @@ export const uiSlice = createSlice({
 
       .addCase(postsCreateAction.fulfilled, (state) => {
         state.postModalOpen = false;
-        state.preloaderVisible = false;
       })
       .addCase(uiPostModalCloseAction, (state) => {
         state.postModalOpen = false;
@@ -48,40 +46,17 @@ export const uiSlice = createSlice({
         state.postModalOpen = true;
       })
 
-      .addCase(postsFetchAction.pending, (state) => {
-        state.preloaderVisible = true;
-      })
-      .addCase(postsFetchAction.fulfilled, (state) => {
-        state.preloaderVisible = false;
-      })
-      .addCase(postsFetchAction.rejected, (state) => {
-        state.preloaderVisible = false;
-      })
-      .addCase(userAuthenticateAction.pending, (state) => {
-        state.preloaderVisible = true;
-      })
-      .addCase(userAuthenticateAction.rejected, (state) => {
-        state.preloaderVisible = false;
+      .addMatcher(isRequestStarted, (state) => {
+          state.preloaderVisible = true;
       })
 
-      .addCase(postsCreateAction.pending, (state) => {
-        state.preloaderVisible = true;
-      })
-      .addCase(postsCreateAction.rejected, (state) => {
-        state.preloaderVisible = false;
-      })
-
-      .addCase(postsApproveAction.pending, (state) => {
-        state.preloaderVisible = true;
-      })
-      .addCase(postsApproveAction.rejected, (state) => {
-        state.preloaderVisible = false;
-      })
-      .addCase(postsApproveAction.fulfilled, (state) => {
+      .addMatcher(isRequestFinished, (state) => {
         state.preloaderVisible = false;
       });
-
   }
 });
+
+const isRequestStarted = ({ type }) => type.endsWith('pending');
+const isRequestFinished = ({ type }) => type.endsWith('rejected') || type.endsWith('fulfilled');
 
 export default uiSlice.reducer;
